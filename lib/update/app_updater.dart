@@ -354,11 +354,11 @@ class UpdateController extends Notifier<UpdateState> {
         throw _UpdateFailure(UpdateError.download,
             'The server answered HTTP ${res.statusCode}.');
       }
-      final finalUrl = res is http.BaseResponseWithUrl ? res.url : info.apkUrl;
-      if (!finalUrl.isScheme('https')) {
-        throw const _UpdateFailure(
-            UpdateError.download, 'Redirected to an insecure URL.');
-      }
+     final finalUrl = res.request?.url ?? info.apkUrl;
+if (!finalUrl.isScheme('https')) {
+  throw const _UpdateFailure(
+      UpdateError.download, 'Redirected to an insecure URL.');
+}
       final total = res.contentLength;
       state = state.copyWith(total: total);
       sink = file.openWrite();
